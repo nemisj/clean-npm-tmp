@@ -52,16 +52,15 @@ ps(function (err, result) {
     // unablet o find parent/node
     return;
   }
-  console.log('FOUND NPM PID', pid);
 
   var tmpFolder = process.env.npm_config_tmp || '/tmp';
   var re = new RegExp('\\bnpm-' + pid);
 
   var list = fs.readdirSync(tmpFolder);
-  list.some(function (item) {
-    if (re.test(item)) {
-      console.log('FOUND folder', item);
-      // fs.rmdirSync(path.join(tmpFolder, item));
+  list.some(function (folder) {
+    if (re.test(folder)) {
+      console.log('Removing folder "' + path.join(tmpFolder, folder) + '"');
+      fs.rmdirSync(path.join(tmpFolder, folder));
       return true;
     }
   });
