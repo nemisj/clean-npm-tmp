@@ -11,10 +11,11 @@ function findNpm(pid, list) {
   list.some(function (item) {
     if (!item) { return false }
     if (Number(item.PID) === Number(pid)) {
+      console.log('Current command of ' + pid + ' is' + item.COMMAND);
       if (/^npm\b/i.test(item.COMMAND)) {
         res = item.PID;
       } else {
-        console.log('Going up from ' + pid + ' (' + item.COMMAND + ') to ' +  item.PPID);
+        console.log('Going up to ' +  item.PPID);
         res = findNpm(item.PPID, list);
       }
 
