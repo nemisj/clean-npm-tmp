@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+'use strict';
+
 var ps = require('./ps-list.js');
 var fs = require('fs');
 var path = require('path');
@@ -22,12 +26,12 @@ function findNpm(pid, list) {
 
 ps(function (err, result) {
   // find parent of the process till we find npm
-  const pid = findNpm(process.pid, result);
+  var pid = findNpm(process.pid, result);
   if (pid) {
-    const tmpFolder = process.env.npm_config_tmp || '/tmp';
-    const re = new RegExp('\\bnpm-' + pid);
+    var tmpFolder = process.env.npm_config_tmp || '/tmp';
+    var re = new RegExp('\\bnpm-' + pid);
     console.log('FOUND NPM PID', pid);
-    const list = fs.readdirSync(tmpFolder);
+    var list = fs.readdirSync(tmpFolder);
     list.some(function (item) {
       if (re.test(item)) {
         console.log('FOUND folder', item);
