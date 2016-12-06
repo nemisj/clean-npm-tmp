@@ -6,40 +6,63 @@ var ps = require('./ps-list.js');
 var fs = require('fs');
 var path = require('path');
 
-function findNpm(pid, list) {
-  var res = null;
+function getInfo(pid, list) {
+  var result = null;
   list.some(function (item) {
     if (!item) { return false }
     if (Number(item.PID) === Number(pid)) {
-      console.log('Current command of ' + pid + ' is:' + item.COMMAND);
-      if (/^npm\b/i.test(item.COMMAND)) {
-        res = item.PID;
-      } else {
-        console.log('Going up to ' +  item.PPID);
-        res = findNpm(item.PPID, list);
-      }
-
+      result = item;
       return true;
     }
   });
 
-  return res;
+  return result;
+}
+
+function findNpm(pid, list) {
+  // in *nix it's called npm, but in windows it can be called node
+  // we should start search from the 
+  const info = getInfo(pid, list);
+
+  if (info) {
+    // is it our thing?
+    if (/^(npm|node)\b/i.test(info.COMMAND)) {
+      return pid;
+    } else {
+      // not our process, search in parent
+      console.log('Going up to ' +  info.PPID);
+      return findNpm(info.PPID, list);
+    }
+  }
+
+  return null;
 }
 
 ps(function (err, result) {
   // find parent of the process till we find npm
-  var pid = findNpm(process.pid, result);
-  if (pid) {
-    var tmpFolder = process.env.npm_config_tmp || '/tmp';
-    var re = new RegExp('\\bnpm-' + pid);
-    console.log('FOUND NPM PID', pid);
-    var list = fs.readdirSync(tmpFolder);
-    list.some(function (item) {
-      if (re.test(item)) {
-        console.log('FOUND folder', item);
-        // fs.rmdirSync(path.join(tmpFolder, item));
-        return true;
-      }
-    });
+  var info = getInfo(process.pid, result);
+  if (!info) {
+    // unable to find any process with this pid
+    return;
   }
+
+  var pid = findNpm(info.PPID, result);
+
+  if (!pid) {
+    // unablet o find parent/node
+    return;
+  }
+  console.log('FOUND NPM PID', pid);
+
+  var tmpFolder = process.env.npm_config_tmp || '/tmp';
+  var re = new RegExp('\\bnpm-' + pid);
+
+  var list = fs.readdirSync(tmpFolder);
+  list.some(function (item) {
+    if (re.test(item)) {
+      console.log('FOUND folder', item);
+      // fs.rmdirSync(path.join(tmpFolder, item));
+      return true;
+    }
+  });
 });

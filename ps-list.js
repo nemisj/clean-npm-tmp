@@ -1,6 +1,7 @@
 'use strict';
 
 var exec = require('child_process').exec;
+var isWindows = (process.platform === 'win32');
 
 function parse(text) {
   var headers = null;
@@ -66,7 +67,7 @@ module.exports = function childrenOfPid(callback) {
     }
     callback(null, parse(stdout));
   };
-  if (process.platform === 'win32') {
+  if (isWindows) {
     // See also: https://github.com/nodejs/node-v0.x-archive/issues/2318
     exec('wmic.exe PROCESS GET Name,ProcessId,ParentProcessId,Status', handler);
   } else {
@@ -81,7 +82,7 @@ module.exports = function childrenOfPid(callback) {
  * @param {string} str Header string to normalize
  */
 function normalizeHeader(str) {
-  if (process.platform !== 'win32') {
+  if (!isWindows) {
     return str;
   }
 
@@ -102,3 +103,5 @@ function normalizeHeader(str) {
       throw new Error('Unknown process listing header: ' + str);
   }
 }
+
+module.exports.isWindows = isWindows;
