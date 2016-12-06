@@ -4,9 +4,6 @@
   "description": "Removes temporary folder from temp when installing dependencies from git",
   "main": "clean.js",
   "bin": "./clean.js",
-  "scripts": {
-    "postinstall": "echo \"POSTINSTALL of the package\""
-  },
   "author": "Maks Nemisj",
   "license": "MIT",
   "dependencies": {
