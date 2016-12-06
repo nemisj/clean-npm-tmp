@@ -1,5 +1,5 @@
-This is a follow up to the issue about npm, which keeps git folder in the tmp
-when installing from git dependencies, like `git+ssh://git@github.com/nemisj/clean-npm-tmp.git`.
+This is a follow up to the issue about npm [https://github.com/npm/npm/issues/6855](https://github.com/npm/npm/issues/6855), 
+which keeps git folder in the tmp when installing from git dependencies, like `git+ssh://git@github.com/nemisj/clean-npm-tmp.git`.
 
 This version package supports both windows and Linux.
 
