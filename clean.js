@@ -5,6 +5,7 @@
 var ps = require('./ps-list.js');
 var fs = require('fs');
 var path = require('path');
+var rimraf = require('rimraf');
 
 function getInfo(pid, list) {
   var result = null;
@@ -53,14 +54,5 @@ ps(function (err, result) {
   }
 
   var tmpFolder = process.env.npm_config_tmp || '/tmp';
-  var re = new RegExp('\\bnpm-' + pid);
-
-  var list = fs.readdirSync(tmpFolder);
-  list.some(function (folder) {
-    if (re.test(folder)) {
-      console.log('Removing folder "' + path.join(tmpFolder, folder) + '"');
-      fs.rmdirSync(path.join(tmpFolder, folder));
-      return true;
-    }
-  });
+  rimraf.sync(path.join(tmpFolder, 'npm-' + pid + '*'));
 });
