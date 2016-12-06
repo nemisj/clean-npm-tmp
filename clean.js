@@ -54,5 +54,6 @@ ps(function (err, result) {
   }
 
   var tmpFolder = process.env.npm_config_tmp || '/tmp';
+  console.log('Removing ' + path.join(tmpFolder, 'npm-' + pid + '*'));
   rimraf.sync(path.join(tmpFolder, 'npm-' + pid + '*'));
 });
