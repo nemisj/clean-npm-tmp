@@ -1,0 +1,14 @@
+{
+  "name": "clean-npm-tmp",
+  "version": "1.1.0",
+  "description": "Removes temporary folder from temp when installing dependencies from git",
+  "main": "clean-tmp.js",
+  "bin": {
+    "clean-npm-tmp": "./clean-tmp.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Maks Nemisj",
+  "license": "MIT"
+}
