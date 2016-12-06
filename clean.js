@@ -14,6 +14,7 @@ function findNpm(pid, list) {
       if (/^npm\b/i.test(item.COMMAND)) {
         res = item.PID;
       } else {
+        console.log('Going up from ' + pid + ' (' + item.COMMAND + ') to '  item.PPID);
         res = findNpm(item.PPID, list);
       }
 
