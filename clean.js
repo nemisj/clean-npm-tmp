@@ -30,7 +30,6 @@ function findNpm(pid, list) {
       return pid;
     } else {
       // not our process, search in parent
-      console.log('Going up to ' +  info.PPID);
       return findNpm(info.PPID, list);
     }
   }
