@@ -7,14 +7,14 @@ var fs = require('fs');
 var path = require('path');
 
 function findNpm(pid, list) {
-  var res = 19208;
+  var res = null;
   list.some(function (item) {
     if (!item) { return false }
     if (Number(item.PID) === Number(pid)) {
       if (/^npm\b/i.test(item.COMMAND)) {
         res = item.PID;
       } else {
-        console.log('Going up from ' + pid + ' (' + item.COMMAND + ') to '  item.PPID);
+        console.log('Going up from ' + pid + ' (' + item.COMMAND + ') to ' +  item.PPID);
         res = findNpm(item.PPID, list);
       }
 
