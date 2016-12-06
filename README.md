@@ -15,7 +15,7 @@ and add the execution into the `postinstall`
 {
   "name": "XXX-YYY-Zzz",
   "version": "1.0.0",
-  "postinstall": "clean-npm-tpm"
+  "postinstall": "clean-npm-tmp"
 }
 ```
 
